@@ -318,22 +318,24 @@ module op_localop(
     reg [7:0] op1_result; // intermediate result for op1  (A op1 B)
     reg [7:0] op2_result; // intermediate result for op2 ((A op1 B) op2 C)
 
+    // Note: {4'b0000, A} turns A from 4-bits to 8 bits
+
     always @(*) begin
         // Determine op1 based on D[3:2]
         case (D[3:2])
-            2'b00: op1_result = A & B;          // 00 = bitwise AND
-            2'b01: op1_result = A | B;          // 01 = bitwise OR
-            2'b10: op1_result = A + B;          // 10 = addition
-            2'b11: op1_result = A * B;          // 11 = multiplication
+            2'b00: op1_result = {4'b0000, A} & {4'b0000, B};          // 00 = bitwise AND
+            2'b01: op1_result = {4'b0000, A} | {4'b0000, B};          // 01 = bitwise OR
+            2'b10: op1_result = {4'b0000, A} + {4'b0000, B};          // 10 = addition
+            2'b11: op1_result = {4'b0000, A} * {4'b0000, B};          // 11 = multiplication
             default: op1_result = 0;
         endcase
         
         // Determine op2 based on D[1:0]
         case (D[1:0])
-            2'b00: op2_result = op1_result & C; // 00 = bitwise AND
-            2'b01: op2_result = op1_result | C; // 01 = bitwise OR
-            2'b10: op2_result = op1_result + C; // 10 = addition
-            2'b11: op2_result = op1_result * C; // 11 = multiplication
+            2'b00: op2_result = op1_result & {4'b0000, C}; // 00 = bitwise AND
+            2'b01: op2_result = op1_result | {4'b0000, C}; // 01 = bitwise OR
+            2'b10: op2_result = op1_result + {4'b0000, C}; // 10 = addition
+            2'b11: op2_result = op1_result * {4'b0000, C}; // 11 = multiplication
             default: op2_result = 0;
         endcase
     end
@@ -363,7 +365,7 @@ module op_dbldist(
      wire `BUSWIDTH deltaY = (B > D) ? (B - D) : (D - B); // |y1 - y2|
 
      // Distance addition with 8-bit can handle larger distance values. 
-     assign distance = deltaX + deltaY;
+     assign distance = {4'b0000, deltaX} + {4'b0000, deltaY};
  
     // Deconstruct high and low 4-bits. Save into M (high) and N (low) 8-bit dist 
      assign M = distance[7:4]; // M = High 4-bits
@@ -384,7 +386,8 @@ module op_dotprod(
     wire [7:0] sum;   // 8-bit final sum
 
     // Compute the dot product (multiplication)
-    assign prod = A * B; // 4-bit * 4-bit = 8-bit result
+    assign prod = {4'b0000, A} * {4'b0000, B}; // 4-bit * 4-bit = 8-bit result
+
 
     // Reconstruct the accumulated sum from C (high 4-bits) and D (low 4-bits)
     assign accum = {C, D}; // Concatenating C and D to form 8-bit value
