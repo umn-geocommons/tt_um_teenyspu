@@ -68,7 +68,7 @@ The following 16 spatial opcodes can be used to create a multitude of spatial me
 | `1110` | DoubleDist | 8-bit Double-Precision OUT Ops |
 | `1111` | DotProduct | 8-bit Double-Precision OUT Ops |
 
-To find more documentation and examples, look at the repository documentation: https://github.com/umn-geocommons. 
+To find more documentation and examples, look at the repository documentation: [https://github.com/umn-geocommons](https://github.com/umn-geocommons/tt_um_teenyspu). 
 
 
 ## How to test
