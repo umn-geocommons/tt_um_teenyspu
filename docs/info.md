@@ -13,7 +13,7 @@ You can also include images in this folder and reference them in the markdown. E
 
 We developed a TeenySPU for the TinyTapeout architecture. TinyTapeout includes 8-bit input (INP), 8-bit output (OUT), and 8-bit input/output-swappable (UIO). The TeenySPU is a 4-bit architecture, so the 8-bit INP, OUT, and UIO are split into two 4-bit sections, high and low. The high 4-bits of INP provide the 4-bit opcode, the low 4-bits of INP control a Q MUX to select how input data from UIO is routed to inputs A, B, C, and D. The 4-bit outputs M and N are routed to OUT high and OUT low, respectively. For more details on the TinyTapeout specs, see: https://tinytapeout.com/specs
 
-<img src="TeenySPU-1.0-TinyTapeout.png"/>
+<img src="TeenySPU-1.0.png"/>
 
 ## Hardware Structure
 
